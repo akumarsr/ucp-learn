@@ -35,6 +35,7 @@ node_modules/
 azure-sp-credentials.json
 commands.txt
 instllation.txt
+application.yaml
 # ignore built binaries
 cmd/argocd/argocd
 cmd/argocd-application-controller/argocd-application-controller
