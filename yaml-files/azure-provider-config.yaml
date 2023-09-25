@@ -1,6 +1,6 @@
 apiVersion: azure.upbound.io/v1beta1
 metadata:
-  name: AzureCloud
+  name: default
 kind: ProviderConfig
 spec:
   credentials:
