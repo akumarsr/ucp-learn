@@ -24,7 +24,7 @@ spec:
           forProvider:
             createMode: Default
             administratorLogin: ucplearnadmin
-            resourceGroupNameRef: rg-ucp-crossplane-learn
+            resourceGroupName: rg-ucp-crossplane-learn
             minimalTlsVersion: TLS1_2
             sslEnforcement: Enabled
             sku:
