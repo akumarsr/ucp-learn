@@ -3,7 +3,7 @@ kind: Composition
 metadata:
   name: xpostgres-composition-ref
   labels:
-    provider: azurerm
+    provider: default
     guide: ucplearn
 spec:
   writeConnectionSecretsToNamespace: crossplane-system
