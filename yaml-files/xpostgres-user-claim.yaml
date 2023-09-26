@@ -1,4 +1,4 @@
-apiVersion: resourcecontrollerv2.ibmcloud.crossplane.io/v1alpha1
+apiVersion: postgres.database.platform.volvocars.com/v1alpha1
 kind: PostgreSQLInstance
 metadata:
   namespace: default
