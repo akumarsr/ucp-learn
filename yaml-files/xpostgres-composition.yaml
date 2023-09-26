@@ -8,7 +8,7 @@ metadata:
 spec:
   writeConnectionSecretsToNamespace: crossplane-system
   compositeTypeRef:
-    apiVersion: postgres.database.platform.volvocars.com/v1alpha1
+    apiVersion: database.postgresql.platform.volvocars.com/v1alpha1
     kind: XCompositePostgreSQLInstance
   patchSets:
   - name: metadata
