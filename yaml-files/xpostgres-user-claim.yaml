@@ -11,6 +11,6 @@ spec:
     dbName: ucp-learn-db
   compositionSelector:
     matchLabels:
-      provider: azure
+      provider: default
   writeConnectionSecretToRef:
     name: ucp-learn-db-connection

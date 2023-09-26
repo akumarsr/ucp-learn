@@ -46,5 +46,6 @@ spec:
                 - version
                 - storageGB
                 - location
+                - dbName
             required:
             - parameters

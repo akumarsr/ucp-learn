@@ -70,7 +70,7 @@ spec:
           - type: math
             math:
               multiply: 1024
-      # database on the db-server
+    # database on the db-server
     - name: postgresqldatabase
       base:
         apiVersion: postgresql.sql.crossplane.io/v1alpha1
