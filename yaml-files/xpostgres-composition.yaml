@@ -15,17 +15,6 @@ spec:
     patches:
     - fromFieldPath: metadata.labels  
   resources:
-    # resource-group where the db-server lives in
-    - name: resourcegroup
-      base:
-        apiVersion: azure.crossplane.io/v1alpha3
-        kind: ResourceGroup
-        spec: {}
-      patches:
-      - type: PatchSet
-        patchSetName: Metadata
-      - fromFieldPath: "spec.parameters.location"
-        toFieldPath: "spec.location"
     # db-server
     - name: postgresqlserver
       base:
@@ -35,8 +24,7 @@ spec:
           forProvider:
             createMode: Default
             administratorLogin: ucplearnadmin
-            resourceGroupNameSelector:
-              matchControllerRef: true
+            resourceGroupNameRef: rg-ucp-crossplane-learn
             minimalTlsVersion: TLS1_2
             sslEnforcement: Enabled
             sku:
