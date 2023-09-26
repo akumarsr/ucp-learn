@@ -1,0 +1,50 @@
+apiVersion: apiextensions.crossplane.io/v1beta1
+kind: CompositeResourceDefinition
+metadata:
+  name: xcompositepostgresqlinstances
+spec:
+  connectionSecretKeys:
+  - username
+  - password
+  - jdbcendpoint
+  - host
+  - port
+  - database
+  defaultCompositionRef:
+    name: xpostgres-composition-ref
+  group: ucp
+  names:
+    kind: XCompositePostgreSQLInstance
+    plural: xcompositepostgresqlinstances
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  version:
+                    description: PostgreSQL engine version
+                    type: string
+                    enum: ["11","12"]
+                  storageGB:
+                    type: integer
+                  location:
+                    description: Geographic location of this PostgreSQL server.
+                    type: string
+                  dbName:
+                    description: The name of the database
+                    type: string
+                required:
+                - version
+                - storageGB
+                - location
+            required:
+            - parameters

@@ -1,0 +1,16 @@
+apiVersion: resourcecontrollerv2.ibmcloud.crossplane.io/v1alpha1
+kind: PostgreSQLInstance
+metadata:
+  namespace: default
+  name: ucp-learn
+spec:
+  parameters:
+    location: westeurope
+    storageGB: 5
+    version: "11"
+    dbName: ucp-learn-db
+  compositionSelector:
+    matchLabels:
+      provider: azure
+  writeConnectionSecretToRef:
+    name: ucp-learn-db-connection
