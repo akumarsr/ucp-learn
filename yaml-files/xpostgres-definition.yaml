@@ -1,7 +1,7 @@
 apiVersion: apiextensions.crossplane.io/v1beta1
 kind: CompositeResourceDefinition
 metadata:
-  name: xcompositepostgresqlinstance
+  name: xcompositepostgresqlinstance.postgres.database.platform.volvocars.com
 spec:
   connectionSecretKeys:
   - username
@@ -12,7 +12,6 @@ spec:
   - database
   defaultCompositionRef:
     name: xpostgres-composition-ref
-  group: ucp
   names:
     kind: XCompositePostgreSQLInstance
     plural: xcompositepostgresqlinstances
