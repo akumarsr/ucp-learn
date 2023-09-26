@@ -24,7 +24,7 @@ spec:
           forProvider:
             createMode: Default
             administratorLogin: ucplearnadmin
-            resourceGroupName: rg-ucp-crossplane-learn
+            resourceGroupNameRef: rg-ucp-crossplane-learn
             minimalTlsVersion: TLS1_2
             sslEnforcement: Enabled
             sku:
@@ -52,9 +52,12 @@ spec:
         toFieldPath: "spec.forProvider.version"
       - fromFieldPath: "spec.parameters.location"
         toFieldPath: "spec.forProvider.location"
+      - fromFieldPath: "spec.parameters.dbName"
+        toFieldPath: "spec.forProvider.dbName"
       - fromFieldPath: "spec.parameters.storageGB"
         toFieldPath: "spec.forProvider.storageProfile.storageMB"
         transforms:
           - type: math
             math:
               multiply: 1024
+   
