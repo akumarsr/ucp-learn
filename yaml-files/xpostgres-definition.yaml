@@ -16,6 +16,9 @@ spec:
   names:
     kind: XCompositePostgreSQLInstance
     plural: xcompositepostgresqlinstances
+  claimNames:
+    kind: PostgreSQLInstance
+    plural: postgresqlinstances
   versions:
   - name: v1alpha1
     served: true
