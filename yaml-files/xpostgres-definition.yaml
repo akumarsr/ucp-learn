@@ -10,6 +10,7 @@ spec:
   - host
   - port
   - database
+  group: ucplearn
   defaultCompositionRef:
     name: xpostgres-composition-ref
   names:
