@@ -1,7 +1,7 @@
 apiVersion: apiextensions.crossplane.io/v1beta1
 kind: CompositeResourceDefinition
 metadata:
-  name: xcompositepostgresqlinstance.ucplearn
+  name: xcompositepostgresqlinstance
 spec:
   connectionSecretKeys:
   - username
@@ -10,7 +10,6 @@ spec:
   - host
   - port
   - database
-  group: ucplearn
   defaultCompositionRef:
     name: xpostgres-composition-ref
   names:
