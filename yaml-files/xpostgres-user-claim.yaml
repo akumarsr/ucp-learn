@@ -8,7 +8,7 @@ spec:
     location: westeurope
     storageGB: 5
     version: "11"
-    dbName: ucp-learn-db
+    dbName: ucp-learn-db1
   compositionSelector:
     matchLabels:
       provider: default
