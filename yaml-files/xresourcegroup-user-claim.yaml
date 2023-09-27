@@ -1,0 +1,11 @@
+apiVersion: xapi.example.org/v1alpha1
+kind: XResourcGroup
+metadata:
+  namespace: default
+  name: ucp-rg-learn
+spec:
+  parameters:
+    name: ucp-learn1
+  compositionSelector:
+    matchLabels:
+      guide: ucplearn

@@ -1,0 +1,36 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xcompositeresourcgroup
+  labels:
+    guide: ucplearn
+spec:
+  group: xapi.example.org
+  name: ucp-resourcgroup
+  names:
+    kind: XResourcGroup
+    plural: xresourcgroups
+  claimNames:
+    kind: CustomResourcGroup
+    plural: customresourcegroups
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  name:
+                    description: The name of the custom resource group
+                    type: string
+                required:
+                - name
+            required:
+            - parameters
