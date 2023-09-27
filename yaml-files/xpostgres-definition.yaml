@@ -1,0 +1,54 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xcompositepostgresqlinstance
+spec:
+  connectionSecretKeys:
+  - username
+  - password
+  - jdbcendpoint
+  - host
+  - port
+  - database
+  group: database.platform.volvocars.com
+  defaultCompositionRef:
+    name: xpostgres-composition-ref
+  names:
+    kind: XCompositePostgreSQLInstance
+    plural: xcompositepostgresqlinstances
+  claimNames:
+    kind: PostgreSQLInstance
+    plural: postgresqlinstances
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  version:
+                    description: PostgreSQL engine version
+                    type: string
+                    enum: ["11","12"]
+                  storageGB:
+                    type: integer
+                  location:
+                    description: Geographic location of this PostgreSQL server.
+                    type: string
+                  dbName:
+                    description: The name of the database
+                    type: string
+                required:
+                - version
+                - storageGB
+                - location
+                - dbName
+            required:
+            - parameters
