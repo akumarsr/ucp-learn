@@ -7,16 +7,31 @@ metadata:
     guide: ucplearn
 spec:
   writeConnectionSecretsToNamespace: crossplane-system
+  #The compositeTypeRef gives this Composition an apiVersion and kind to reference in another Composition
+  #A Composition’s compositeTypeRef defines which Composite Resource type can use this Composition.
   compositeTypeRef:
     apiVersion: database.platform.volvocars.com/v1alpha1
     kind: XCompositePostgreSQLInstance
   patchSets:
   - name: metadata
     patches:
-    - fromFieldPath: metadata.labels  
+    - fromFieldPath: metadata.labels 
+  #The resources field of a Composition’s spec defines the set of things that a Composite Resource creates. 
   resources:
+    # resource group with other resource live in  
+    - name: rg-ucp-learn
+      base: 
+        apiVersion: azure.upbound.io/v1beta1
+        kind: ResourceGroup
+        spec:
+          forProvider:
+            location: West Europe
+            tags:
+              provisioner: crossplane-composition
+              application: ucplearn
     # db-server
     - name: postgresqlserver
+      # The contents of the base are identical to creating a standalone managed resource.
       base:
         apiVersion: database.azure.crossplane.io/v1beta1
         kind: PostgreSQLServer
@@ -24,7 +39,9 @@ spec:
           forProvider:
             createMode: Default
             administratorLogin: ucplearnadmin
-            resourceGroupNameRef: rg-ucp-crossplane-learn
+            # Matching a controller reference ensures that the matching resource is in the same composite resource
+            # Matching only a controller reference simplifies the matching process without requiring labels or more information.
+            resourceGroupNameRef: rg-ucp-learn
             minimalTlsVersion: TLS1_2
             sslEnforcement: Enabled
             sku:
@@ -39,6 +56,8 @@ spec:
             namespace: crossplane-system
           providerConfigRef:
             name: default
+      # Some Compositions have resources which need identical patches applied. 
+      # Instead of repeating the same patches field, resources can reference a single patchSet.
       patches:
       - type: PatchSet
         patchSetName: Metadata
