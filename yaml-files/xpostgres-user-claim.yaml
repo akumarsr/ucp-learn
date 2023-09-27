@@ -1,4 +1,4 @@
-apiVersion: xcompositepostgresqlinstance.database.platform.volvocars.com/v1alpha1
+apiVersion: database.platform.volvocars.com/v1alpha1
 kind: PostgreSQLInstance
 metadata:
   namespace: default
