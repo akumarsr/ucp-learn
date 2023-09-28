@@ -8,3 +8,6 @@ spec:
     tags:
       provisioner: crossplane
       application: ucplearn
+  # the spec.providerConfigRef.name must match the ProviderConfig metadata.name value.
+  providerConfigRef:
+    name: azure
