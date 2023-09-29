@@ -28,21 +28,35 @@
 
    **UCP** is structured into distinct layers:
 
-   > **Layer 1 - Kubernetes Runtime**:Handles critical functions such as event monitoring, reconciliation, management of Custom Resource Definitions (CRDs), OpenAPI, data persistence (etcd), Ingress handling, RBAC enforcement, and workload execution.
+   > **Layer 1 - Kubernetes Runtime**: Handles critical functions such as event monitoring, reconciliation, management of Custom Resource Definitions (CRDs), OpenAPI, data persistence (etcd), Ingress handling, RBAC enforcement, and workload execution.
 
-   > **Layer 2 - Crossplane Runtime**:Manages interactions with external APIs, encompassing resource creation, updates, and deletions.
+   > **Layer 2 - Crossplane Runtime**: Manages interactions with external APIs, encompassing resource creation, updates, and deletions.
    
-   > **Layer 3 - Providers**:Establishes connections with cloud APIs to enable the provisioning and management of cloud resources.
+   > **Layer 3 - Providers**: Establishes connections with cloud APIs to enable the provisioning and management of cloud resources.
    
-   > **Layer 4 - Configurations**:Composes customized domain-specific APIs, empowering the management of resources and configurations with fine-grained control.
+   > **Layer 4 - Configurations**: Composes customized domain-specific APIs, empowering the management of resources and configurations with fine-grained control.
 
    **UCP** Leverages **ArgoCD** to continuously observe changes in the infrastructure and assists in seamlessly syncing these changes back to a Git repository.
+   
+   **Standerd DevOps Flow**
 
-  Here, the visual representation of **UCP**
+   <picture>
+      <source media="(prefers-color-scheme: light)" srcset="../images/devopsstdflow.png">
+      <img alt="Standard DevOps Flow" width="750px" height="250px" src="../images/devopsstdflow.png">
+   </picture> 
+   
+   **Crossplane DevOps Flow**
+
+   <picture>
+      <source media="(prefers-color-scheme: light)" srcset="../images/devopscrossplaneflow.png">
+      <img alt="Crossplane DevOps Flow" width="750px" height="250px" src="../images/devopscrossplaneflow.png">
+   </picture> 
+
+   Here, the visual representation of **UCP**
 
   <picture>
       <source media="(prefers-color-scheme: light)" srcset="../images/UCP Architecture Understanding.png">
-      <img alt="UCP Architecture Understanding" width="850px" height="350px" src="../images/UCP Architecture Understanding.png">
+      <img alt="UCP Architecture Understanding" width="900px" height="400px" src="../images/UCP Architecture Understanding.png">
   </picture> 
   
   **Platform Team in UCP**
@@ -50,7 +64,7 @@
   
   <picture>
       <source media="(prefers-color-scheme: light)" srcset="../images/comositeresourcedefinition.png">
-      <img alt="UCP XRD" width="850px" height="350px" src="../images/comositeresourcedefinition.png">
+      <img alt="UCP XRD" width="750px" height="250px" src="../images/comositeresourcedefinition.png">
   </picture> 
 
   **Azure Provider Configration**
@@ -74,6 +88,7 @@
         name: azure-secret
         key: creds
   ```
+
   **Managed Resources**
   A managed resource (MR) represents an external service in a Provider. When users create a new managed resource, the Provider reacts by creating an external resource inside the Provider’s environment. Every external service managed by Crossplane maps to a managed resource.
 
@@ -93,8 +108,8 @@
         application: ucplearn
     # the spec.providerConfigRef.name must match the ProviderConfig metadata.name value.
     providerConfigRef:
-      name: azure
-    ```
+      name: azure 
+  ```
 
   **Composition**
   Compositions are a template for creating multiple managed resources as a single object.
@@ -130,7 +145,6 @@
               tags:
                 provisioner: crossplane-composition
                 application: ucplearn
-      # db-server
       - name: postgresqlserver
         base:
           apiVersion: database.azure.crossplane.io/v1beta1
@@ -175,66 +189,66 @@
             - type: math
               math:
                 multiply: 1024
-    ```
-    **Composite Resource Definition(XRD)**
+  ```
+  **Composite Resource Definition(XRD)**
 
-    Composite resource definitions (XRDs) define the schema for a custom API.
-    Users create composite resources (XRs) and Claims (XCs) using the API schema defined by an XRD.
+  Composite resource definitions (XRDs) define the schema for a custom API.Users create composite resources (XRs) and Claims (XCs) using the API schema defined by an XRD.
 
-    ```
-    apiVersion: apiextensions.crossplane.io/v1
-    kind: CompositeResourceDefinition
-    metadata:
-      name: xcompositepostgresqlinstance
-      namespace: ucplearn
-    spec:
-      connectionSecretKeys:
-      - username
-      - password
-      - jdbcendpoint
-      - host
-      - port
-      - database
-      group: database.platform.volvocars.com
-      defaultCompositionRef:
-        name: xpostgres-composition-ref
-      names:
-        kind: XCompositePostgreSQLInstance
-        plural: xcompositepostgresqlinstances
-      claimNames:
-        kind: PostgreSQLInstance
-        plural: postgresqlinstances
-      versions:
-      - name: v1alpha1
-        served: true
-        referenceable: true
-        schema:
-          openAPIV3Schema:
-            type: object
-            properties:
-              spec:
-                type: object
-                properties:
-                  parameters:
-                    type: object
-                    properties:
-                      version:
-                        description: PostgreSQL engine version
-                        type: string
-                        enum: ["11","12"]
-                      storageGB:
-                        type: integer
-                      location:
-                        description: Geographic location of this PostgreSQL server.
-                        type: string
-                      dbName:
-                        description: The name of the database
-                        type: string
-                    required:
-                    - version
-                    - storageGB
-                    - location
-                    - dbName
-                required:
-                - parameters
-      ``` 
+  ```
+  apiVersion: apiextensions.crossplane.io/v1
+  kind: CompositeResourceDefinition
+  metadata:
+    name: xcompositepostgresqlinstance
+    namespace: ucplearn
+  spec:
+    connectionSecretKeys:
+    - username
+    - password
+    - jdbcendpoint
+    - host
+    - port
+    - database
+    group: database.platform.volvocars.com
+    defaultCompositionRef:
+      name: xpostgres-composition-ref
+    names:
+      kind: XCompositePostgreSQLInstance
+      plural: xcompositepostgresqlinstances
+    claimNames:
+      kind: PostgreSQLInstance
+      plural: postgresqlinstances
+    versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                parameters:
+                  type: object
+                  properties:
+                    version:
+                      description: PostgreSQL engine version
+                      type: string
+                      enum: ["11","12"]
+                    storageGB:
+                      type: integer
+                    location:
+                      description: Geographic location of this PostgreSQL server.
+                      type: string
+                    dbName:
+                      description: The name of the database
+                      type: string
+                  required:
+                  - version
+                  - storageGB
+                  - location
+                  - dbName
+              required:
+              - parameters
+              
+    ``` 
