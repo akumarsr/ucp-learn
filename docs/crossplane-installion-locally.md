@@ -13,8 +13,8 @@ Need to add the path in system environment variables PATH
 curl.exe -Lo kind-windows-amd64.exe https://kind.sigs.k8s.io/dl/v0.17.0/kind-windows-amd64
 Move-Item .\kind-windows-amd64.exe c:\kind\kind.exe
 
-Need to add the path in system environment variables PATH
 ```
+Need to add the path in system environment variables PATH
 
 ### Crossplane install
 
