@@ -95,6 +95,7 @@
     providerConfigRef:
       name: azure
     ```
+
   **Composition**
   Compositions are a template for creating multiple managed resources as a single object.
   A Composition composes individual managed resources together into a larger, reusable, solution.
@@ -111,8 +112,6 @@
       guide: ucplearn
   spec:
     writeConnectionSecretsToNamespace: crossplane-system
-    #The compositeTypeRef gives this Composition an apiVersion and kind to reference in another Composition
-    #A Composition’s compositeTypeRef defines which Composite Resource type can use this Composition.
     compositeTypeRef:
       apiVersion: database.platform.volvocars.com/v1alpha1
       kind: XCompositePostgreSQLInstance
@@ -120,9 +119,7 @@
     - name: metadata
       patches:
       - fromFieldPath: metadata.labels 
-    #The resources field of a Composition’s spec defines the set of things that a Composite Resource creates. 
     resources:
-      # resource group with other resource live in  
       - name: rg-ucp-learn
         base: 
           apiVersion: azure.upbound.io/v1beta1
@@ -135,7 +132,6 @@
                 application: ucplearn
       # db-server
       - name: postgresqlserver
-        # The contents of the base are identical to creating a standalone managed resource.
         base:
           apiVersion: database.azure.crossplane.io/v1beta1
           kind: PostgreSQLServer
@@ -143,8 +139,6 @@
             forProvider:
               createMode: Default
               administratorLogin: ucplearnadmin
-              # Matching a controller reference ensures that the matching resource is in the same composite resource
-              # Matching only a controller reference simplifies the matching process without requiring labels or more information.
               resourceGroupNameRef: rg-ucp-learn
               minimalTlsVersion: TLS1_2
               sslEnforcement: Enabled
@@ -160,8 +154,6 @@
               namespace: crossplane-system
             providerConfigRef:
               name: azure
-        # Some Compositions have resources which need identical patches applied. 
-        # Instead of repeating the same patches field, resources can reference a single patchSet.
         patches:
         - type: PatchSet
           patchSetName: Metadata
@@ -185,8 +177,10 @@
                 multiply: 1024
     ```
     **Composite Resource Definition(XRD)**
+
     Composite resource definitions (XRDs) define the schema for a custom API.
     Users create composite resources (XRs) and Claims (XCs) using the API schema defined by an XRD.
+
     ```
     apiVersion: apiextensions.crossplane.io/v1
     kind: CompositeResourceDefinition
@@ -243,8 +237,4 @@
                     - dbName
                 required:
                 - parameters
-      ```
-
-
-
-    
+      ``` 
