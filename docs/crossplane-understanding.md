@@ -75,8 +75,30 @@
         key: creds
   ```
   **Managed Resources**
+  A managed resource (MR) represents an external service in a Provider. When users create a new managed resource, the Provider reacts by creating an external resource inside the Provider’s environment. Every external service managed by Crossplane maps to a managed resource.
 
+  ```
+  apiVersion: azure.upbound.io/v1beta1
+  kind: ResourceGroup
+  metadata:
+    name: rg-ucp-crossplane-learn
+    namespace: ucplearn
+    annotations:
+      provider.platform.volvocars.com/external-name: azure-resourcegroup
+  spec:
+    forProvider:
+      location: West Europe
+      tags:
+        provisioner: crossplane
+        application: ucplearn
+    # the spec.providerConfigRef.name must match the ProviderConfig metadata.name value.
+    providerConfigRef:
+      name: azure
+    ```
   **Composition**
+  Compositions are a template for creating multiple managed resources as a single object.
+  A Composition composes individual managed resources together into a larger, reusable, solution.
+  An example Composition may combine a virtual machine, storage resources and networking policies. A Composition template links all these individual resources together.
 
   ```
   apiVersion: apiextensions.crossplane.io/v1
@@ -163,7 +185,8 @@
                 multiply: 1024
     ```
     **Composite Resource Definition(XRD)**
-
+    Composite resource definitions (XRDs) define the schema for a custom API.
+    Users create composite resources (XRs) and Claims (XCs) using the API schema defined by an XRD.
     ```
     apiVersion: apiextensions.crossplane.io/v1
     kind: CompositeResourceDefinition
