@@ -38,7 +38,7 @@
 
    **UCP** Leverages **ArgoCD** to continuously observe changes in the infrastructure and assists in seamlessly syncing these changes back to a Git repository.
    
-   **Standerd DevOps Flow**
+   **Standard DevOps Flow**
 
    <picture>
       <source media="(prefers-color-scheme: light)" srcset="../images/devopsstdflow.png">
@@ -251,4 +251,4 @@
               required:
               - parameters
               
-    ``` 
+  

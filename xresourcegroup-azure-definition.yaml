@@ -1,12 +1,13 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xcompositeresourcgroup
+  name: xcustomeresourcgroup
+  annotations:
+    resource.platform.volvocars.com/external-name: azure-custom-resourcegroup
   labels:
     guide: ucplearn
 spec:
-  group: xapi.example.org
-  name: ucp-resourcgroup
+  group: resource.platform.volvocars.com
   names:
     kind: XResourcGroup
     plural: xresourcgroups
@@ -26,11 +27,3 @@ spec:
             properties:
               parameters:
                 type: object
-                properties:
-                  name:
-                    description: The name of the custom resource group
-                    type: string
-                required:
-                - name
-            required:
-            - parameters
