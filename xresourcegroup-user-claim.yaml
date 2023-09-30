@@ -1,9 +1,0 @@
-apiVersion: xapi.example.org/v1alpha1
-kind: CustomResourcGroup
-metadata:
-  namespace: default
-  name: xcompositeresourcgroup
-spec:
-  compositionSelector:
-    matchLabels:
-      guide: ucplearn

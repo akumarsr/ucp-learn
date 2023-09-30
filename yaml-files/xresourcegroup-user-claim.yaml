@@ -1,0 +1,10 @@
+apiVersion: resource.platform.volvocars.com/v1alpha1
+kind: CustomResourcGroup
+metadata:
+  namespace: default
+  name: resourcgroup
+spec:
+  compositionRef:
+    name: resourcgroup-composition
+  parameters:
+    resourceGroupName: rg-ucp-crossplane

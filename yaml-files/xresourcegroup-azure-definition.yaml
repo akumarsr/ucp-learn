@@ -1,7 +1,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xcustomeresourcgroup
+  name: xresourcgroup.resource.platform.volvocars.com
   annotations:
     resource.platform.volvocars.com/external-name: azure-custom-resourcegroup
   labels:
@@ -14,6 +14,8 @@ spec:
   claimNames:
     kind: CustomResourcGroup
     plural: customresourcegroups
+  defaultCompositionRef:
+    name: resourcgroup-composition
   versions:
   - name: v1alpha1
     served: true
@@ -27,3 +29,8 @@ spec:
             properties:
               parameters:
                 type: object
+                properties:
+                  resourceGroupName:
+                    type: string
+                required:
+                  - resourceGroupName
