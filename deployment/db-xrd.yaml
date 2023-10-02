@@ -1,0 +1,136 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xclusters.db.aws.bakery.volvocars.biz
+spec:
+  group: db.aws.bakery.volvocars.biz
+  names:
+    kind: XCluster
+    plural: xclusters
+  claimNames:
+    kind: Cluster
+    plural: clusters
+  defaultCompositionRef:
+    name: clusters.db.aws.bakery.volvocars.biz
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  name: 
+                    type: string
+                    description: The name of the resources as prefix 
+                  providerConfigRef:
+                    type: string
+                    default: crossplane-provider-aws-config
+                    description: Crossplane provider to reference
+                  region:
+                    type: string
+                    default: ${AWS_REGION}
+                    description: Region is which region the DB cluster/instance will be created.
+                  engine:
+                    type: string
+                    description: The name of the database engine to be used for this instance. Support both mysql or postgresql
+                  skipFinalSnapshot:
+                    type: boolean
+                    default: true
+                    description: A value that indicates whether to skip the creation of a final DB instance snapshot before the DB instance is deleted.
+                  masterUsername:
+                    type: string
+                    description: The name of the master user for the DB cluster.
+                  databaseName:
+                    type: string
+                    description: The name of the initial database to be created.
+                  masterUserPasswordSecretRef:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Name of the secret.
+                      namespace:
+                        type: string
+                        description: Namespace of the secret.
+                      key:
+                        type: string
+                        description: The key to select.
+                    required:
+                    - name
+                    - namespace
+                    - key
+                  dbInstanceClass:
+                    type: string
+                    default: db.t3.medium
+                    description: The compute and memory capacity of the DB instance, for example, db.t3.medium.
+                  engineVersion:
+                    type: string
+                    description: The version number of the database engine to use. 
+                  zoneId:
+                    type: string
+                    default: ${ZONE_ID}
+                    description: AWS Host Zone ID.
+                  vpcId:
+                    type: string
+                    default: ${VPC_ID}
+                    description: VPCID is the ID of the VPC.
+                  dbSubnetGroupName:
+                    type: string
+                    default: ${CLUSTER_NAME}-dbsubnetgroup-shared
+                    description: A subnet group where to host the DB cluster. By default, it uses the shared resource to host the cluster.
+                  clusterName:
+                    type: string
+                    default: ${CLUSTER_NAME}
+                    description: The name of the eks cluster.
+                  clusterDomain:
+                    type: string
+                    default: ${CLUSTER_DOMAIN}
+                    description: The FQDN of the eks cluster.
+                  ttl:
+                    type: integer
+                    default: 60
+                    description: The resource record cache time to live (TTL), in seconds.
+                  deletionPolicy: 
+                    type: string
+                    default: Delete
+                    description: DeletionPolicy specifies what will happen to the underlying external when this managed resource is deleted - either "Delete" or "Orphan" the external resource.
+                  tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        value:
+                          type: string
+                      required:
+                      - key
+                      - value
+                required:
+                - name
+                - engine
+                - engineVersion
+                - masterUsername
+                - masterUserPasswordSecretRef
+                - tags
+            required:
+            - parameters
+          status:
+            type: object
+            properties:
+              endpoint:
+                description: DB Cluster endpoint.
+                type: string
+              readerEndpoint:
+                description: The reader endpoint for the DB cluster.
+                type: string
+              dbClusterIdentifier:
+                description: Contains a user-supplied DB cluster identifier. This identifier is the unique key that identifies a DB cluster.
+                type: string
