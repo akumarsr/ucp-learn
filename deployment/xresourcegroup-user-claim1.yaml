@@ -5,4 +5,4 @@ metadata:
   name: claim2.xresourcgroup.resource.platform.volvocars.com
 spec:
   parameters:
-    resourceGroupName: rg-ucp-aks-02
+    resourceGroupName: rgucpaks
