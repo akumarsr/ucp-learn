@@ -16,8 +16,6 @@ spec:
     plural: customresourcegroups
   defaultCompositionRef:
     name: resourcgroup-composition
-  enforcedCompositionRef:
-    name: resourcgroup-composition
   versions:
   - name: v1alpha1
     served: true
