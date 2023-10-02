@@ -16,6 +16,33 @@ Move-Item .\kind-windows-amd64.exe c:\kind\kind.exe
 ```
 Need to add the path in system environment variables PATH
 
+### Setup kind cluster
+kind version
+# output: kind v0.17.0 go1.19.2 windows/amd64
+kind create cluster
+
+### to delete cluster
+kind delete cluster
+
+kind create cluster --name ucp-learn --config cluster/clusterconfig.yaml
+-- verify output with "kubectl cluster-info --context kind-ucp-learn"
+-- output: 
+        Kubernetes control plane is running at https://127.0.0.1:61388
+        CoreDNS is running at https://127.0.0.1:61388/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+kubectl get nodes
+-- output:
+      NAME                      STATUS   ROLES           AGE     VERSION
+      ucp-learn-control-plane   Ready    control-plane   3m19s   v1.25.3
+      ucp-learn-worker          Ready    <none>          2m45s   v1.25.3
+      ucp-learn-worker2         Ready    <none>          2m46s   v1.25.3
+
+kubectl get pods
+-- output: No resources found in default namespace.
+
+kubectl get pods -n crossplane-system
+-- output: No resources found in crossplane-system namespace.
+
 ### Crossplane install
 
 Review crossplane-stable release [Crossplane official website](https://charts.crossplane.io/stable)
