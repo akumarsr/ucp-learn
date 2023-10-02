@@ -12,20 +12,19 @@ spec:
     kind: XResourcGroup
   writeConnectionSecretsToNamespace: crossplane-system
   resources:
-      - name: resourcegroup
-        base: 
-          apiVersion: azure.upbound.io/v1beta1
-          kind: ResourceGroup
-          metadata: {}
-          spec:
-            forProvider:
-              location: West Europe
-              tags:
-                provisioner: crossplane-composition
-                application: ucplearn
-                createdby: akumarsr
-          patches:
-            - fromFieldPath: spec.parameters.resourceGroupName
-              toFieldPath: metadata.name
+    - name: resourcegroup
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.resourceGroupName
+          toFieldPath: metadata.annotations[crossplane.io/external-name]
+      base: 
+        apiVersion: azure.upbound.io/v1beta1
+        kind: ResourceGroup
+        spec:
+          forProvider:
+            location: West Europe
+            tags:
+              provisioner: crossplane-composition
+              application: ucplearn
           providerConfigRef:
             name: azure
