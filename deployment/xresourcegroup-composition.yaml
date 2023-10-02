@@ -1,11 +1,13 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: resourcgroup-composition
+  name: resourcgroup.resource.platform.volvocars.com
   labels:
+    crossplane.io/xrd: xresourcgroups.resource.platform.volvocars.com
     provider: azure
+    version: "1.0.0"
   annotations:
-    resource.platform.volvocars.com/external-name: composition-azure-custom-resourcegroup
+    resource.platform.volvocars.com/external-name: resourcegroup
 spec:
   compositeTypeRef:
     apiVersion: resource.platform.volvocars.com/v1alpha1
@@ -26,5 +28,6 @@ spec:
             tags:
               provisioner: crossplane-composition
               application: ucplearn
+              createdby: akumarsr
           providerConfigRef:
             name: azure
