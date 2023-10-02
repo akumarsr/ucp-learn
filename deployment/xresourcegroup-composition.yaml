@@ -18,7 +18,7 @@ spec:
       patches:
         - type: FromCompositeFieldPath
           fromFieldPath: spec.parameters.resourceGroupName
-          toFieldPath: metadata.annotations[crossplane.io/external-name]
+          toFieldPath: metadata.name
       base: 
         apiVersion: azure.upbound.io/v1beta1
         kind: ResourceGroup
