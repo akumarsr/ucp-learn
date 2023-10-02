@@ -1,0 +1,30 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: resourcgroup-composition
+  labels:
+    provider: azure
+  annotations:
+    resource.platform.volvocars.com/external-name: composition-azure-custom-resourcegroup
+spec:
+  compositeTypeRef:
+    apiVersion: resource.platform.volvocars.com/v1alpha1
+    kind: XResourcGroup
+  writeConnectionSecretsToNamespace: crossplane-system
+  resources:
+      - name: resourcegroup
+        base: 
+          apiVersion: azure.upbound.io/v1beta1
+          kind: ResourceGroup
+          metadata: {}
+          spec:
+            forProvider:
+              location: West Europe
+              tags:
+                provisioner: crossplane-composition
+                application: ucplearn
+          patches:
+            - fromFieldPath: spec.parameters.resourceGroupName
+              toFieldPath: metadata.name
+          providerConfigRef:
+            name: azure
