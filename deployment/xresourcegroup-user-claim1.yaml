@@ -2,7 +2,7 @@ apiVersion: resource.platform.volvocars.com/v1alpha1
 kind: CustomResourcGroup
 metadata:
   namespace: default
-  name: claim.xresourcgroup.resource.platform.volvocars.com
+  name: claim2.xresourcgroup.resource.platform.volvocars.com
 spec:
   compositionRef:
     name: resourcgroup-composition
