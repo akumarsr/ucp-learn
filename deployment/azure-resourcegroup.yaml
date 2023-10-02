@@ -1,7 +1,7 @@
 apiVersion: azure.upbound.io/v1beta1
 kind: ResourceGroup
 metadata:
-  name: rg-ucp-crossplane-learn
+  name: rg-aks-ucp-learn
   namespace: ucplearn
   annotations:
     provider.platform.volvocars.com/external-name: azure-resourcegroup
@@ -11,6 +11,7 @@ spec:
     tags:
       provisioner: crossplane
       application: ucplearn
+      createdby: akumarsr
   # the spec.providerConfigRef.name must match the ProviderConfig metadata.name value.
   providerConfigRef:
     name: azure
