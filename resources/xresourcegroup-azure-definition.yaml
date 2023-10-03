@@ -1,9 +1,9 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xresourcgroup.resource.platform.volvocars.com
+  name: xresourcgroups.resource.platform.volvocars.com
   annotations:
-    resource.platform.volvocars.com/external-name: azure-custom-resourcegroup
+    resource.platform.volvocars.com/external-name: resourcegroup
   labels:
     guide: ucplearn
 spec:
@@ -15,7 +15,7 @@ spec:
     kind: CustomResourcGroup
     plural: customresourcegroups
   defaultCompositionRef:
-    name: resourcgroup-composition
+    name: resourcgroup.resource.platform.volvocars.com
   versions:
   - name: v1alpha1
     served: true
