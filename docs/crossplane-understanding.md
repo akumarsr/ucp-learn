@@ -120,22 +120,24 @@
   apiVersion: apiextensions.crossplane.io/v1
   kind: Composition
   metadata:
-    name: xpostgres-composition-ref
-    namespace: ucplearn
+    name: resourcgroup.resource.platform.volvocars.com
     labels:
+      crossplane.io/xrd: xresourcgroups.resource.platform.volvocars.com
       provider: azure
-      guide: ucplearn
+      version: "1.0.0"
+    annotations:
+      resource.platform.volvocars.com/external-name: resourcegroup
   spec:
-    writeConnectionSecretsToNamespace: crossplane-system
     compositeTypeRef:
-      apiVersion: database.platform.volvocars.com/v1alpha1
-      kind: XCompositePostgreSQLInstance
-    patchSets:
-    - name: metadata
-      patches:
-      - fromFieldPath: metadata.labels 
+      apiVersion: resource.platform.volvocars.com/v1alpha1
+      kind: XResourcGroup
+    writeConnectionSecretsToNamespace: crossplane-system
     resources:
-      - name: rg-ucp-learn
+      - name: resourcegroup
+        patches:
+          - type: FromCompositeFieldPath
+            fromFieldPath: spec.parameters.resourceGroupName
+            toFieldPath: metadata.name
         base: 
           apiVersion: azure.upbound.io/v1beta1
           kind: ResourceGroup
@@ -145,50 +147,9 @@
               tags:
                 provisioner: crossplane-composition
                 application: ucplearn
-      - name: postgresqlserver
-        base:
-          apiVersion: database.azure.crossplane.io/v1beta1
-          kind: PostgreSQLServer
-          spec:
-            forProvider:
-              createMode: Default
-              administratorLogin: ucplearnadmin
-              resourceGroupNameRef: rg-ucp-learn
-              minimalTlsVersion: TLS1_2
-              sslEnforcement: Enabled
-              sku:
-                tier: GeneralPurpose
-                capacity: 2
-                family: Gen5  
-              storageProfile:
-                backupRetentionDays: 35
-                geoRedundantBackup: Disabled
-                storageAutogrow: Disabled
-            writeConnectionSecretToRef:
-              namespace: crossplane-system
+                createdby: akumarsr
             providerConfigRef:
               name: azure
-        patches:
-        - type: PatchSet
-          patchSetName: Metadata
-        - fromFieldPath: "metadata.uid"
-          toFieldPath: "spec.writeConnectionSecretToRef.name"
-          transforms:
-          - type: string
-            string:
-              fmt: "postgresqlserver-admin-%s"
-        - fromFieldPath: "spec.parameters.version"
-          toFieldPath: "spec.forProvider.version"
-        - fromFieldPath: "spec.parameters.location"
-          toFieldPath: "spec.forProvider.location"
-        - fromFieldPath: "spec.parameters.dbName"
-          toFieldPath: "spec.forProvider.dbName"
-        - fromFieldPath: "spec.parameters.storageGB"
-          toFieldPath: "spec.forProvider.storageProfile.storageMB"
-          transforms:
-            - type: math
-              math:
-                multiply: 1024
   ```
   **Composite Resource Definition(XRD)**
 
@@ -198,57 +159,51 @@
   apiVersion: apiextensions.crossplane.io/v1
   kind: CompositeResourceDefinition
   metadata:
-    name: xcompositepostgresqlinstance
-    namespace: ucplearn
+  name: xresourcgroups.resource.platform.volvocars.com
+  annotations:
+    resource.platform.volvocars.com/external-name: resourcegroup
+  labels:
+    guide: ucplearn
   spec:
-    connectionSecretKeys:
-    - username
-    - password
-    - jdbcendpoint
-    - host
-    - port
-    - database
-    group: database.platform.volvocars.com
-    defaultCompositionRef:
-      name: xpostgres-composition-ref
-    names:
-      kind: XCompositePostgreSQLInstance
-      plural: xcompositepostgresqlinstances
-    claimNames:
-      kind: PostgreSQLInstance
-      plural: postgresqlinstances
-    versions:
-    - name: v1alpha1
-      served: true
-      referenceable: true
-      schema:
-        openAPIV3Schema:
-          type: object
-          properties:
-            spec:
-              type: object
-              properties:
-                parameters:
-                  type: object
-                  properties:
-                    version:
-                      description: PostgreSQL engine version
-                      type: string
-                      enum: ["11","12"]
-                    storageGB:
-                      type: integer
-                    location:
-                      description: Geographic location of this PostgreSQL server.
-                      type: string
-                    dbName:
-                      description: The name of the database
-                      type: string
-                  required:
-                  - version
-                  - storageGB
-                  - location
-                  - dbName
-              required:
-              - parameters
-              
-  
+  group: resource.platform.volvocars.com
+  names:
+    kind: XResourcGroup
+    plural: xresourcgroups
+  claimNames:
+    kind: CustomResourcGroup
+    plural: customresourcegroups
+  defaultCompositionRef:
+    name: resourcgroup.resource.platform.volvocars.com
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  resourceGroupName:
+                    type: string
+                required:
+                  - resourceGroupName
+
+  ```   
+  **Composite Resource Claim**
+
+  ```
+  apiVersion: resource.platform.volvocars.com/v1alpha1
+  kind: CustomResourcGroup
+  metadata:
+    namespace: default
+    name: claim1.xresourcgroup.resource.platform.volvocars.com
+  spec:
+    parameters:
+      resourceGroupName: <user input: name of resource group>
+
+  ```
